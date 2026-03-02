@@ -21,6 +21,7 @@ interface Manifest {
         [key: number]: string
     }
     permissions: string[]
+    host_permissions?: string[]
     content_scripts: Array<{
         matches: string[]
         js: string[]
@@ -68,7 +69,12 @@ const createBaseManifest = async (): Promise<Manifest> => {
                 48: './assets/icon-48.png',
                 128: './assets/icon-128.png'
             },
-            permissions: [],
+            permissions: ['storage', 'scripting', 'tabCapture'],
+            host_permissions: [
+                'https://*/*',
+                'http://localhost:*/*',
+                'http://127.0.0.1:*/*'
+            ],
             content_scripts: [
                 {
                     matches: ['<all_urls>'],

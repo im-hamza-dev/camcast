@@ -2,6 +2,9 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import styles from '@/styles/index.css?inline'
 import App from './App'
+import { setupVirtualCamRelay } from './virtualCamRelay'
+
+setupVirtualCamRelay()
 
 const isProduction: boolean = process.env.NODE_ENV === 'production'
 const ROOT_ID = 'RENAME_ME_IF_YOU_WANT'

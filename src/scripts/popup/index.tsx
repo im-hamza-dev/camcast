@@ -4,6 +4,7 @@ import Popup from './Popup'
 import React from 'react'
 
 const container = document.getElementById('popup-root')
-const root = createRoot(container!)
-
-root.render(<Popup />)
+if (container) {
+    const root = createRoot(container)
+    root.render(<Popup />)
+}
