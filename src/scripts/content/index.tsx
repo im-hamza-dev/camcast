@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client'
 import styles from '@/styles/index.css?inline'
 import App from './App'
 import { setupVirtualCamRelay } from './virtualCamRelay'
+import { setupCloneCamInjectButton } from './cloneCamInjectButton'
 
 setupVirtualCamRelay()
+setupCloneCamInjectButton()
 
 const isProduction: boolean = process.env.NODE_ENV === 'production'
 const ROOT_ID = 'RENAME_ME_IF_YOU_WANT'

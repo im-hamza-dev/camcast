@@ -2,6 +2,8 @@
  * Camcast: bridge for tab-capture stream from clone-cam.vercel.app to Meet.
  */
 
+const MEET_URL = 'https://meet.google.com'
+
 chrome.runtime.onInstalled.addListener(() => {
     console.log('Camcast extension installed')
 })
@@ -15,6 +17,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             world: 'MAIN'
         }).then(() => sendResponse({ ok: true })).catch(() => sendResponse({ ok: false }))
         return true
+    }
+    if (type === 'SET_SOURCE_AND_OPEN_MEET' && sender.tab?.id != null) {
+        const sourceTabId = sender.tab.id
+        chrome.storage.local.set({ cloneCamTabId: sourceTabId }, () => {
+            chrome.tabs.query({ url: '*://meet.google.com/*' }, (tabs) => {
+                if (tabs.length > 0 && tabs[0].id != null) {
+                    chrome.tabs.update(tabs[0].id, { active: true })
+                    chrome.windows.update(tabs[0].windowId!, { focused: true })
+                } else {
+                    chrome.tabs.create({ url: MEET_URL })
+                }
+            })
+        })
+        sendResponse({ ok: true })
+        return false
     }
     if (type === 'GET_CLONE_CAM_TAB') {
         chrome.tabs.query({ url: ['*://clone-cam.vercel.app/*', '*://*.clone-cam.vercel.app/*', 'http://localhost:*/*'] }, (tabs) => {
